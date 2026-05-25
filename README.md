@@ -285,6 +285,38 @@ Response:
     "status": "healthy",
     "database": "connected"
 }
+
+### POST /ai/suggest
+
+Return a short suggested reply for a customer message. This endpoint uses the local SOP matcher by default (free, deterministic) and will call an external LLM only if `OPENAI_API_KEY` is provided in the environment.
+
+Request:
+
+```json
+{
+    "message": "I want to book an appointment next Tuesday"
+}
+```
+
+Response (SOP-based):
+
+```json
+{
+    "suggested_response": "Thank you for reaching out! We'd love to help you book an appointment. Please let us know your preferred date and time, and we'll confirm availability right away.",
+    "matched_sop": "Booking Enquiry",
+    "source": "sop"
+}
+```
+
+Response (template fallback):
+
+```json
+{
+    "suggested_response": "Thanks for reaching out — we can help. Quick reply: 'I want to book an appointment next Tuesday'. When would you like to schedule this or would you like more details?",
+    "matched_sop": null,
+    "source": "template"
+}
+```
 ```
 
 ## SOP Matching Logic
