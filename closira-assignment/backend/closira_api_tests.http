@@ -1,0 +1,130 @@
+### Closira API — HTTP Test File
+### Works with REST Client (VS Code extension) or IntelliJ HTTP Client
+
+@baseUrl = http://localhost:8000
+
+### ── 1. Health Check ────────────────────────────────────────────
+
+GET {{baseUrl}}/health
+Accept: application/json
+
+###
+
+### ── 2. Create Enquiry — Pricing Question ───────────────────────
+
+POST {{baseUrl}}/enquiry
+Content-Type: application/json
+
+{
+  "channel": "whatsapp",
+  "customer_name": "Sarah M",
+  "message": "I want pricing details for your service"
+}
+
+###
+
+### ── 3. Create Enquiry — Booking ────────────────────────────────
+
+POST {{baseUrl}}/enquiry
+Content-Type: application/json
+
+{
+  "channel": "email",
+  "customer_name": "James K",
+  "message": "I'd like to book an appointment for next Tuesday"
+}
+
+###
+
+### ── 4. Create Enquiry — Complaint ─────────────────────────────
+
+POST {{baseUrl}}/enquiry
+Content-Type: application/json
+
+{
+  "channel": "call",
+  "customer_name": "Priya S",
+  "message": "I have a complaint about the service — this is terrible and I am very upset"
+}
+
+###
+
+### ── 5. Create Enquiry — Demo Request ──────────────────────────
+
+POST {{baseUrl}}/enquiry
+Content-Type: application/json
+
+{
+  "channel": "whatsapp",
+  "customer_name": "Marcus T",
+  "message": "Can you show me a demo of your product? I'd love a walkthrough"
+}
+
+###
+
+### ── 6. Create Enquiry — No SOP match (triggers auto-escalation)
+
+POST {{baseUrl}}/enquiry
+Content-Type: application/json
+
+{
+  "channel": "email",
+  "customer_name": "Unknown User",
+  "message": "xyzzy frobozz magic zork nonsense string"
+}
+
+###
+
+### ── 7. Schedule Follow-up (replace {id} with actual enquiry ID)
+
+POST {{baseUrl}}/enquiry/REPLACE_WITH_ENQUIRY_ID/follow-up
+Content-Type: application/json
+
+{
+  "delay_minutes": 30,
+  "message_template": "Following up regarding your enquiry. We'd love to help!"
+}
+
+###
+
+### ── 8. Escalate Enquiry (replace {id} with actual enquiry ID)
+
+POST {{baseUrl}}/enquiry/REPLACE_WITH_ENQUIRY_ID/escalate
+Content-Type: application/json
+
+{
+  "reason": "Customer requested to speak with a manager"
+}
+
+###
+
+### ── 9. Get Enquiry History (replace {id} with actual enquiry ID)
+
+GET {{baseUrl}}/enquiry/REPLACE_WITH_ENQUIRY_ID/history
+Accept: application/json
+
+###
+
+### ── 10. Invalid channel (should return 422) ───────────────────
+
+POST {{baseUrl}}/enquiry
+Content-Type: application/json
+
+{
+  "channel": "telegram",
+  "customer_name": "Test User",
+  "message": "Hello"
+}
+
+###
+
+### ── 11. Follow-up on escalated enquiry (should return 422) ────
+
+POST {{baseUrl}}/enquiry/REPLACE_WITH_ESCALATED_ID/follow-up
+Content-Type: application/json
+
+{
+  "delay_minutes": 15
+}
+
+###

@@ -1,0 +1,162 @@
+{
+  "info": {
+    "name": "Closira Enquiry API",
+    "description": "Complete API test collection for the Closira enquiry-handling pipeline.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8000",
+      "type": "string"
+    },
+    {
+      "key": "enquiryId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/health",
+        "description": "Returns API status and database connectivity."
+      }
+    },
+    {
+      "name": "Create Enquiry — Pricing",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "var jsonData = pm.response.json();",
+              "pm.collectionVariables.set('enquiryJobId', jsonData.job_id);",
+              "pm.test('Status 202', () => pm.response.to.have.status(202));",
+              "pm.test('Has job_id', () => pm.expect(jsonData.job_id).to.be.a('string'));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/enquiry",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"channel\": \"whatsapp\",\n  \"customer_name\": \"Sarah M\",\n  \"message\": \"I want pricing details for your service\"\n}"
+        },
+        "description": "Creates a pricing enquiry. SOP: Pricing Question."
+      }
+    },
+    {
+      "name": "Create Enquiry — Booking",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/enquiry",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"channel\": \"email\",\n  \"customer_name\": \"James K\",\n  \"message\": \"I would like to book an appointment for next Tuesday\"\n}"
+        },
+        "description": "Creates a booking enquiry. SOP: Booking Enquiry."
+      }
+    },
+    {
+      "name": "Create Enquiry — Complaint",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/enquiry",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"channel\": \"call\",\n  \"customer_name\": \"Priya S\",\n  \"message\": \"I have a complaint — the service was terrible and I am very upset\"\n}"
+        },
+        "description": "Creates a complaint enquiry. SOP: Complaint."
+      }
+    },
+    {
+      "name": "Create Enquiry — Demo Request",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/enquiry",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"channel\": \"whatsapp\",\n  \"customer_name\": \"Marcus T\",\n  \"message\": \"Can you show me a demo of the product walkthrough?\"\n}"
+        },
+        "description": "Creates a demo request. SOP: Product Demo Request."
+      }
+    },
+    {
+      "name": "Create Enquiry — Auto-Escalation",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/enquiry",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"channel\": \"email\",\n  \"customer_name\": \"Unknown\",\n  \"message\": \"xyzzy frobozz magic zork nonsense message\"\n}"
+        },
+        "description": "No SOP match — triggers automatic escalation."
+      }
+    },
+    {
+      "name": "Schedule Follow-up",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/enquiry/{{enquiryId}}/follow-up",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"delay_minutes\": 30,\n  \"message_template\": \"Following up regarding your enquiry. How can we help?\"\n}"
+        },
+        "description": "Schedule a follow-up. Set enquiryId variable first."
+      }
+    },
+    {
+      "name": "Escalate Enquiry",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/enquiry/{{enquiryId}}/escalate",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"reason\": \"Customer requested to speak with a manager\"\n}"
+        },
+        "description": "Manually escalate an enquiry."
+      }
+    },
+    {
+      "name": "Get Enquiry History",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/enquiry/{{enquiryId}}/history",
+        "description": "Full conversation history, SOP match, timeline, follow-ups."
+      }
+    },
+    {
+      "name": "404 — Nonexistent Enquiry",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/enquiry/does-not-exist/history",
+        "description": "Should return 404."
+      }
+    },
+    {
+      "name": "422 — Invalid Channel",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/enquiry",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"channel\": \"telegram\",\n  \"customer_name\": \"Test\",\n  \"message\": \"Hello\"\n}"
+        },
+        "description": "Should return 422 — telegram is not a valid channel."
+      }
+    }
+  ]
+}
