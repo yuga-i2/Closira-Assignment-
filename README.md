@@ -388,19 +388,12 @@ If this were moving toward production, the next steps would be:
 
 ## Video Walkthrough
 
-Add your demo video here:
+<p align="center">
+  <a href="https://youtu.be/Rh9Qo_cR63Y?si=coWcU67EbeuFF61i" target="_blank">
+    <img src="https://img.youtube.com/vi/Rh9Qo_cR63Y/hqdefault.jpg" alt="Watch the demo video" width="900">
+  </a>
+</p>
 
-- 2 to 5 minutes total
-- Backend startup and Swagger tour
-- Creating an enquiry and showing async SOP matching
-- Frontend navigation walkthrough
-- One architecture decision explained clearly
-
-Example placeholder:
-
-```text
-https://your-video-link-here
-```
 
 ## About This Submission
 
