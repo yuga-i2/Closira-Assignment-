@@ -18,6 +18,7 @@ import { ChannelBadge } from '../components/ChannelBadge';
 import { COLORS, FONT_SIZE, RADIUS, SPACING } from '../constants';
 import { formatRelativeTime } from '../utils';
 import { RootStackParamList } from '../types';
+import { API_BASE_URL } from '../config';
 import { useOpenEscalationCount } from '../utils/store';
 
 type Nav = NativeStackNavigationProp<RootStackParamList>;
@@ -43,7 +44,7 @@ export const HomeScreen: React.FC = () => {
 
     const checkHealth = async () => {
       try {
-        const response = await fetch('http://localhost:8000/health', { signal: controller.signal });
+        const response = await fetch(`${API_BASE_URL}/health`, { signal: controller.signal });
         if (!response.ok) {
           throw new Error('Health check failed');
         }
