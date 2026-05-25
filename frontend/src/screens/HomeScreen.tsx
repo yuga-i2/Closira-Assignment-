@@ -35,6 +35,7 @@ export const HomeScreen: React.FC = () => {
   const escalationCount = useOpenEscalationCount();
   const stats = { ...mockDashboardStats, openEscalations: escalationCount };
   const [apiStatus, setApiStatus] = useState<'checking' | 'connected' | 'offline'>('checking');
+  const [aiSuggestion, setAiSuggestion] = useState<string | null>(null);
   const today = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
 
   useEffect(() => {
@@ -50,6 +51,21 @@ export const HomeScreen: React.FC = () => {
         }
         if (active) {
           setApiStatus('connected');
+          // fetch a small AI suggestion demo (free SOP-based suggestion)
+          try {
+            const payload = { message: 'I would like to book an appointment next Tuesday' };
+            const r = await fetch(`${API_BASE_URL}/ai/suggest`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload),
+            });
+            if (r.ok) {
+              const j = await r.json();
+              setAiSuggestion(j.suggested_response ?? null);
+            }
+          } catch {
+            // silent
+          }
         }
       } catch {
         if (active) {
@@ -102,6 +118,12 @@ export const HomeScreen: React.FC = () => {
               <Ionicons name={apiStatusIcon as any} size={12} color={apiStatusColor} />
               <Text style={[styles.apiStatusText, { color: apiStatusColor }]}>{apiStatusLabel}</Text>
             </View>
+              {aiSuggestion ? (
+                <View style={styles.aiPill}>
+                  <Text style={styles.aiLabel}>AI Suggestion</Text>
+                  <Text style={styles.aiText} numberOfLines={2}>{aiSuggestion}</Text>
+                </View>
+              ) : null}
           </View>
           <View style={styles.logoBadge}>
             <Text style={styles.logoText}>CL</Text>
@@ -255,6 +277,25 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     letterSpacing: 0.3,
   },
+  aiPill: {
+    marginTop: 10,
+    backgroundColor: COLORS.card,
+    borderRadius: RADIUS.md,
+    padding: SPACING.sm,
+    marginHorizontal: SPACING.xl,
+    borderWidth: 1,
+    borderColor: COLORS.cardBorder,
+  },
+  aiLabel: {
+    fontSize: FONT_SIZE.xs,
+    fontWeight: '700',
+    color: COLORS.textMuted,
+    marginBottom: 4,
+  },
+  aiText: {
+    fontSize: FONT_SIZE.sm,
+    color: COLORS.textPrimary,
+  },
   logoBadge: {
     width: 44,
     height: 44,
@@ -324,44 +365,3 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.card,
     borderRadius: RADIUS.lg,
     padding: SPACING.md,
-    marginBottom: SPACING.sm,
-    borderWidth: 1,
-    borderColor: COLORS.cardBorder,
-    gap: SPACING.md,
-  },
-  activityIcon: {
-    width: 36,
-    height: 36,
-    borderRadius: RADIUS.md,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  activityInfo: { flex: 1, gap: 3 },
-  activityHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: SPACING.sm,
-  },
-  activityName: {
-    fontSize: FONT_SIZE.base,
-    fontWeight: '600',
-    color: COLORS.textPrimary,
-  },
-  activityPreview: {
-    fontSize: FONT_SIZE.sm,
-    color: COLORS.textSecondary,
-  },
-  activityRight: {
-    alignItems: 'flex-end',
-    gap: 6,
-  },
-  activityTime: {
-    fontSize: FONT_SIZE.xs,
-    color: COLORS.textMuted,
-  },
-  activityTypeDot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-  },
-});
