@@ -20,6 +20,14 @@ Closira helps SMBs manage customer enquiries across WhatsApp, email, and phone w
 
 In short, this is a working prototype of Closira’s core operational loop: capture enquiry, classify it, escalate when needed, and keep the team informed.
 
+## Video Walkthrough
+
+<p align="center">
+  <a href="https://youtu.be/Rh9Qo_cR63Y?si=coWcU67EbeuFF61i" target="_blank">
+    <img src="https://img.youtube.com/vi/Rh9Qo_cR63Y/hqdefault.jpg" alt="Watch the demo video" width="900">
+  </a>
+</p>
+
 ## Quick Start
 
 ### Prerequisites
@@ -386,13 +394,7 @@ If this were moving toward production, the next steps would be:
 4. Replace mock data with a typed frontend API layer.
 5. Add integration tests that cover the full backend-to-frontend flow.
 
-## Video Walkthrough
 
-<p align="center">
-  <a href="https://youtu.be/Rh9Qo_cR63Y?si=coWcU67EbeuFF61i" target="_blank">
-    <img src="https://img.youtube.com/vi/Rh9Qo_cR63Y/hqdefault.jpg" alt="Watch the demo video" width="900">
-  </a>
-</p>
 
 
 ## About This Submission
