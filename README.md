@@ -325,10 +325,10 @@ Response (template fallback):
     "source": "template"
 }
 ```
-```
+
 
 ## SOP Matching Logic
-
+```
 The background worker uses keyword scoring across five SOP categories:
 
 | SOP Category | Trigger Keywords |
