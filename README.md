@@ -5,7 +5,7 @@
 ![SQLite](https://img.shields.io/badge/SQLite-3-blue)
 ![Tests](https://img.shields.io/badge/Tests-24%20passing-brightgreen)
 
-# Closira — Engineering Assignment Submission
+# Enquiry Escalation Platform
 
 Full-stack submission for the Closira / Breakout AI Engineering Internship. This repository contains a FastAPI backend that triages customer enquiries asynchronously and a React Native dashboard that lets a business owner monitor leads, escalations, and follow-ups from a phone. The goal is not just to show code that runs, but to show engineering judgment: clear APIs, explicit trade-offs, and a system shaped around Closira’s actual business workflow.
 
